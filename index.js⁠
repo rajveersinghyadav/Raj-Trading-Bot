@@ -1,25 +1,17 @@
-// index.js
+// index.js - Updated
 const market = require('./market/dataFetcher');
 const brain = require('./core/brain');
 const executor = require('./execution/executor');
 
 async function startBot() {
-    console.log("Bot active ho gaya hai...");
+    const marketData = await market.getAllMarketData();
     
-    // Yahan hum bot ka loop chalayenge
-    try {
-        const marketData = await market.getLatestData();
-        const decision = await brain.analyze(marketData);
+    for (let asset in marketData) {
+        let decision = await brain.analyze(marketData[asset], asset);
         
         if (decision.action !== 'HOLD') {
-            await executor.placeTrade(decision);
-        } else {
-            console.log("Bot: Filhal koi achha signal nahi hai, WAIT kar rahe hain.");
+            await executor.placeTrade(decision, asset);
         }
-    } catch (error) {
-        console.error("Bot Error:", error);
     }
 }
-
-// Bot ko start karein
 startBot();
