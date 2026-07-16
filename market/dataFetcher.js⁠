@@ -1,9 +1,15 @@
-// market/dataFetcher.js
+// market/dataFetcher.js - Updated
 const config = require('../config');
 
-async function getLatestData() {
-    console.log(`Market data fetch ho raha hai ${config.SYMBOL} ke liye...`);
-    return { price: 65000, volume: 100 };
+async function getAllMarketData() {
+    console.log("Fetching data for all assets...");
+    let marketData = {};
+    
+    for (let asset of config.ASSETS) {
+        // Yahan har asset ke liye data fetch hoga
+        marketData[asset] = { price: 2000, volume: 500 }; 
+    }
+    return marketData;
 }
 
-module.exports = { getLatestData };
+module.exports = { getAllMarketData };
