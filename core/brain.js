@@ -1,16 +1,19 @@
-// core/brain.js
+// core/brain.js - Updated for Multi-Asset
 const config = require('../config');
 
-async function analyze(marketData) {
-    console.log("Brain: Market data analyse ho raha hai...");
+async function analyze(marketData, asset) {
+    console.log(`Brain: ${asset} ka data analyse ho raha hai...`);
     
-    // Yahan logic ayega ki kab Buy ya Sell karna hai
-    // Gold (XAUUSD) ke liye trend identification
-    if (marketData.price > 2000) { // Ye sirf ek example condition hai
-        return { action: 'BUY', confidence: 0.85 };
+    // Yahan hum har asset ke liye alag logic set karenge
+    if (asset === 'XAUUSD') {
+        // Gold ke liye logic: thoda zyada conservative rahenge
+        if (marketData.price > 2000) return { action: 'BUY', confidence: 0.8 };
     } else {
-        return { action: 'HOLD', confidence: 0 };
+        // Baki assets ke liye normal logic
+        if (marketData.volume > 100) return { action: 'BUY', confidence: 0.7 };
     }
+    
+    return { action: 'HOLD', confidence: 0 };
 }
 
 module.exports = { analyze };
