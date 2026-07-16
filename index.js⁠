@@ -1,7 +1,8 @@
-// index.js - Updated
+// index.js - Final Logic
 const market = require('./market/dataFetcher');
 const brain = require('./core/brain');
 const executor = require('./execution/executor');
+const learner = require('./core/learning'); // Naya module import kiya
 
 async function startBot() {
     const marketData = await market.getAllMarketData();
@@ -10,7 +11,9 @@ async function startBot() {
         let decision = await brain.analyze(marketData[asset], asset);
         
         if (decision.action !== 'HOLD') {
-            await executor.placeTrade(decision, asset);
+            let result = await executor.placeTrade(decision, asset);
+            // Trade ke baad result seekhein
+            await learner.recordResult(asset, decision.action, result); 
         }
     }
 }
