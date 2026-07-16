@@ -1,0 +1,9 @@
+// market/dataFetcher.js
+const config = require('../config');
+
+async function getLatestData() {
+    console.log(`Market data fetch ho raha hai ${config.SYMBOL} ke liye...`);
+    return { price: 65000, volume: 100 };
+}
+
+module.exports = { getLatestData };
