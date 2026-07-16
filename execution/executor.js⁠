@@ -1,10 +1,16 @@
 // execution/executor.js
-async function placeTrade(decision) {
-    if (decision.action === 'BUY') {
-        console.log("Executor: BUY order place kiya gaya hai.");
-        // Yahan MT5 API call aayegi
-    } else if (decision.action === 'SELL') {
-        console.log("Executor: SELL order place kiya gaya hai.");
+async function placeTrade(decision, asset) {
+    console.log(`Executor: ${asset} par ${decision.action} order place kiya ja raha hai...`);
+    
+    // Yahan real MT5/API call aayegi (abhi hum mock result de rahe hain)
+    const success = true; 
+    
+    if (success) {
+        console.log(`Executor: ${asset} par trade successfully open ho gaya.`);
+        return "PROFIT"; // Filhal testing ke liye hum "PROFIT" bhej rahe hain
+    } else {
+        console.log(`Executor: ${asset} par trade fail ho gaya.`);
+        return "LOSS";
     }
 }
 
