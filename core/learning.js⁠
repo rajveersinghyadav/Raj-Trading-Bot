@@ -1,0 +1,14 @@
+// core/learning.js
+const fs = require('fs');
+
+async function recordResult(asset, action, result) {
+    console.log(`Learning: ${asset} ke liye ${action} ka result ${result} record ho raha hai...`);
+    
+    // Yahan hum result ko ek JSON file mein store karenge
+    const log = { asset, action, result, time: new Date().toISOString() };
+    
+    // (Optional) Yahan aap file system mein save karne ka code likh sakte hain
+    console.log("History Updated:", log);
+}
+
+module.exports = { recordResult };
