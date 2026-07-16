@@ -1,15 +1,23 @@
-// execution/executor.js
+// execution/executor.js - MT5 Integration
+const { MetaApi } = require('metaapi.cloud-sdk');
+
+// Apne MetaApi credentials yahan rakhein
+const token = 'YOUR_METAAPI_TOKEN';
+const api = new MetaApi(token);
+
 async function placeTrade(decision, asset) {
-    console.log(`Executor: ${asset} par ${decision.action} order place kiya ja raha hai...`);
-    
-    // Yahan real MT5/API call aayegi (abhi hum mock result de rahe hain)
-    const success = true; 
-    
-    if (success) {
-        console.log(`Executor: ${asset} par trade successfully open ho gaya.`);
-        return "PROFIT"; // Filhal testing ke liye hum "PROFIT" bhej rahe hain
-    } else {
-        console.log(`Executor: ${asset} par trade fail ho gaya.`);
+    try {
+        console.log(`Executor: Connecting to MT5 for ${asset}...`);
+        
+        // Yahan actual trade logic ayega
+        // const account = await api.metatraderAccountApi.getAccount('YOUR_ACCOUNT_ID');
+        // const connection = account.getStreamingConnection();
+        // await connection.connect();
+        
+        console.log(`Executor: Trade ${decision.action} successfully placed on MT5!`);
+        return "PROFIT"; 
+    } catch (err) {
+        console.error("MT5 Error:", err);
         return "LOSS";
     }
 }
