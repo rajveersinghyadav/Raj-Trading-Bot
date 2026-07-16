@@ -1,24 +1,27 @@
-// execution/executor.js - MT5 Integration
+// execution/executor.js - Real MetaApi Connection
 const { MetaApi } = require('metaapi.cloud-sdk');
 
-// Apne MetaApi credentials yahan rakhein
-const token = 'YOUR_METAAPI_TOKEN';
+const token = 'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIwYTFkYjQwNzI0MDg3ZDA4NDk0ZjFmMWZhMDdiNTBkNiIsImFjY2Vzc1J1bGVzIjpbeyJpZCI6InRyYWRpbmctYWNjb3VudC1tYW5hZ2VtZW50LWFwaSIsIm1ldGhvZHMiOlsidHJhZGluZy1hY2NvdW50LW1hbmFnZW1lbnQtYXBpOnJlc3Q6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiLCJ3cml0ZXIiXSwicmVzb3VyY2VzIjpbIio6JFVTRVJfSUQkOioiXX0seyJpZCI6Im1ldGFhcGktcmVzdC1hcGkiLCJtZXRob2RzIjpbIm1ldGFhcGktYXBpOnJlc3Q6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiLCJ3cml0ZXIiXSwicmVzb3VyY2VzIjpbIio6JFVTRVJfSUQkOioiXX0seyJpZCI6Im1ldGFhcGktcnBjLWFwaSIsIm1ldGhvZHMiOlsibWV0YWFwaS1hcGk6d3M6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiLCJ3cml0ZXIiXSwicmVzb3VyY2VzIjpbIio6JFVTRVJfSUQkOioiXX0seyJpZCI6Im1ldGFhcGktcmVhbC10aW1lLXN0cmVhbWluZy1hcGkiLCJtZXRob2RzIjpbIm1ldGFhcGktYXBpOndzOnB1YmxpYzoqOioiXSwicm9sZXMiOlsicmVhZGVyIiwid3JpdGVyIl0sInJlc291cmNlcyI6WyIqOiRVU0VSX0lEJDoqIl19LHsiaWQiOiJtZXRhc3RhdHMtYXBpIiwibWV0aG9kcyI6WyJtZXRhc3RhdHMtYXBpOnJlc3Q6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiLCJ3cml0ZXIiXSwicmVzb3VyY2VzIjpbIio6JFVTRVJfSUQkOioiXX0seyJpZCI6InJpc2stbWFuYWdlbWVudC1hcGkiLCJtZXRob2RzIjpbInJpc2stbWFuYWdlbWVudC1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciIsIndyaXRlciJdLCJyZXNvdXJjZXMiOlsiKjokVVNFUl9JRCQ6KiJdfSx7ImlkIjoiY29weWZhY3RvcnktYXBpIiwibWV0aG9kcyI6WyJjb3B5ZmFjdG9yeS1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciIsIndyaXRlciJdLCJyZXNvdXJjZXMiOlsiKjokVVNFUl9JRCQ6KiJdfSx7ImlkIjoibXQtbWFuYWdlci1hcGkiLCJtZXRob2RzIjpbIm10LW1hbmFnZXItYXBpOnJlc3Q6ZGVhbGluZzoqOioiLCJtdC1tYW5hZ2VyLWFwaTpyZXN0OnB1YmxpYzoqOioiXSwicm9sZXMiOlsicmVhZGVyIiwid3JpdGVyIl0sInJlc291cmNlcyI6WyIqOiRVU0VSX0lEJDoqIl19LHsiaWQiOiJiaWxsaW5nLWFwaSIsIm1ldGhvZHMiOlsiYmlsbGluZy1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciJdLCJyZXNvdXJjZXMiOlsiKjokVVNFUl9JRCQ6KiJdfV0sImlnbm9yZVJhdGVMaW1pdHMiOmZhbHNlLCJ0b2tlbklkIjoiMjAyMTAyMTMiLCJpbXBlcnNvbmF0ZWQiOmZhbHNlLCJyZWFsVXNlcklkIjoiMGExZGI0MDcyNDA4N2QwODQ5NGYxZjFmYTA3YjUwZDYiLCJpYXQiOjE3ODQxOTUwNTMsImV4cCI6MTc5MTk3MTA1M30.n_3od25rx9fyS5iPas0OQlb9J95B8pWE0CikhUVdmBvto8dGS8zO9fjXDK2ZYpknjSEt1CGIkwIZY3I7wuqYtkLoeQ0hWRibszNLI4lK-DQlbSqkSQYMXIaQqr6yd1BmOHukEQxPbS_dwCNf6F86NALKUuZcFB33ybxETBvpYhyVY8Y-ywwA8OblphGkd851TnWZXzWGta7mCz76A7nJzj1121W_ycw9QJrO9gU9o5Dh2El23oqL9v2Bp9alEj5qbiqFQz_s7SCBalQrSgbf0oICXeZu7NqR95aa_icyWpHVcZmkgjEY1HOmCsS_hBxvSwTUpans5R3pGdLcxd48uHBnxKoCvWk0hv1eoBf8KTwS50g5Msel_ZdXns6yrMfV_DSA6I-VURGdb7dWbvFN2Jg7sGIStemZVVI75zdVL6hE48J9S8LlgYmkIeX7MKPcH01nbbVLe-ZZbnQRYRF687JA6ZeKbGwHJtj7byJWQP-GiQ7WrS5l5BlYGeHCPHxUb_aWIMTeG1XXqIIAkOjfzL3AIehOZPxwKrwC1b44_TJ9w6dGP_Uh_JUHKeCGs4sgnaMIKh54My03ta6iN-YB3__w8MolYmyfMdJPU1M4f7cMH-ZKNKhxwE3o6vp0c1R8dHOUN4TZLL9cgqdnyUq4LsXb8hzMPeVi6NvoWKjn7vA';
 const api = new MetaApi(token);
+const accountId = '867eacef-b3c5-4530-8d07-9a450f2a7b69';
 
 async function placeTrade(decision, asset) {
     try {
-        console.log(`Executor: Connecting to MT5 for ${asset}...`);
+        const account = await api.metatraderAccountApi.getAccount(accountId);
+        const connection = account.getStreamingConnection();
+        await connection.connect();
         
-        // Yahan actual trade logic ayega
-        // const account = await api.metatraderAccountApi.getAccount('YOUR_ACCOUNT_ID');
-        // const connection = account.getStreamingConnection();
-        // await connection.connect();
+        console.log(`Executor: ${asset} par ${decision.action} ka order MT5 par bheja ja raha hai...`);
+
+        // Yahan trade execute hoga
+        const result = await connection.createMarketOrder(asset, decision.action === 'BUY' ? 'buy' : 'sell', 0.1, 0, 0, { stopLoss: 5, takeProfit: 10 });
         
-        console.log(`Executor: Trade ${decision.action} successfully placed on MT5!`);
-        return "PROFIT"; 
+        console.log(`Executor: Trade successfully placed! Order ID: ${result.orderId}`);
+        return "SUCCESS";
+
     } catch (err) {
-        console.error("MT5 Error:", err);
-        return "LOSS";
+        console.error("MT5 Execution Error:", err);
+        return "FAILED";
     }
 }
 
