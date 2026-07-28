@@ -1,8 +1,8 @@
-// config.js
 module.exports = {
-    SYMBOL: ['XAUUSD', 'BTCUSD', 'EURUSD', 'GBPUSD'],
-    QUANTITY: 0.1,
-    PROFIT_TARGET_USD: 10.0, 
-    TIMEFRAME: '1m',
+  PORT: process.env.PORT || 3000,
+  SUPPORTED_ASSETS: ["BTCUSDT", "ETHUSDT", "EURUSD", "GBPUSD", "XAUUSD"],
+  UPDATE_INTERVAL_MS: 1000,
+  CONFIDENCE_THRESHOLD: 1.0, // Requires 100% certainty for dynamic target expansion
+  INITIAL_TARGET_MULTIPLIER: 1.5,
+  DYNAMIC_STEP_MULTIPLIER: 0.5
 };
-
