@@ -1,7 +1,15 @@
 {
   "name": "raj-trading-bot",
   "version": "1.0.0",
+  "description": "AI Self-Learning Crypto & Forex Prediction Bot with Dynamic Target Expansion and Chatbot Visuals",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
-    "metaapi.cloud-sdk": "^2.0.0"
+    "express": "^4.18.2",
+    "ws": "^8.13.0",
+    "axios": "^1.4.0",
+    "canvas": "^2.11.2"
   }
 }
